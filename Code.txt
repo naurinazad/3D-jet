@@ -6,15 +6,21 @@
 #include <glut.h>
 
 #define pi (2*acos(0.0))
-
+int obs_x=0;
+int obs_y=0;
+int obs_z=0;
 double cameraHeight;
 double cameraAngle;
 int bullet=0;
 int drawgrid;
 int drawaxes;
+int loop1=0;
 int v1=0;
 int v2=0;
-int n;
+int randx,randy,randz,ra=0;
+int obx[50];
+int oby[50];
+int obz[50];
 double road_lim=5000;
 double moveground=0;
 int keypressflag=1;
@@ -23,6 +29,7 @@ double angle_c_z=0;
 double angle_c_x=0, angle_t_x=0, angle_t_z=0;
 double red=.8, green=.8, blue=1;
 double limit=0.0;
+bool hit=false;
 
 struct point
 {
@@ -791,10 +798,223 @@ void buildings(int y,int z){
         //v2 = (rand()%(5000 - 1 + 1))+1;
         glPopMatrix();
 }
+void obstacles(){
+    glTranslatef(-15,-5,0);
+    glRotatef(90,0,1,0);
+    glBegin(GL_QUADS);
+            glColor3f(1.0f,0.0f,0.5f);
+            glVertex3f(0,0,0);					    // Top front Of The Quad (right)
+            glVertex3f(0,10,0);					// Top back Of The Quad (right)
+            glVertex3f(0,10,15);					// Bottom back Of The Quad (right)
+            glVertex3f(0,0,15);
+
+            glVertex3f(1,0,0);					    // Top front Of The Quad (right)
+            glVertex3f(1,10,0);					// Top back Of The Quad (right)
+            glVertex3f(1,10,15);					// Bottom back Of The Quad (right)
+            glVertex3f(1,0,15);
+
+            glVertex3f(0,0,0);					    // Top front Of The Quad (right)
+            glVertex3f(1,0,0);					// Top back Of The Quad (right)
+            glVertex3f(1,0,15);					// Bottom back Of The Quad (right)
+            glVertex3f(0,0,15);
+
+            glVertex3f(0,10,0);					    // Top front Of The Quad (right)
+            glVertex3f(1,10,0);					// Top back Of The Quad (right)
+            glVertex3f(1,10,15);					// Bottom back Of The Quad (right)
+            glVertex3f(0,10,15);
+
+            glVertex3f(0,0,0);					    // Top front Of The Quad (right)
+            glVertex3f(1,0,0);					// Top back Of The Quad (right)
+            glVertex3f(1,10,0);					// Bottom back Of The Quad (right)
+            glVertex3f(0,10,0);
+
+            glVertex3f(0,0,15);					    // Top front Of The Quad (right)
+            glVertex3f(1,0,15);					// Top back Of The Quad (right)
+            glVertex3f(1,10,15);					// Bottom back Of The Quad (right)
+            glVertex3f(0,10,15);
+     glEnd();
+}
 void Ground(){
+
+   //for (int c = 1; c <= 1; c++) {
+
+//obstacles
+  /*glPushMatrix();
+    if(ra<50){
+
+
+     randx=rand() % 50 + 1;
+    randy=rand() % 50 + 1;
+    randz=rand() % 100 + 1;
+
+    printf("%d",randx);
+    printf("%d",randy);
+    printf("%d",randz);
+
+
+        ra++;
+   }
+   if(loop1<50){
+   	  glTranslatef(obx[loop1],oby[loop1],obz[loop1]);
+
+      loop1++;
+   }
+   if(loop1==50){
+     loop1=0;
+   }
+    glPopMatrix();*/
+
+
 
     glPushMatrix();
     glTranslated(0,0,moveground);
+
+    //obstacles
+    glPushMatrix();
+        glTranslatef(0,0,100);
+        obstacles();
+    //printf("x:%lf y:%lf\n",angle_t_x,angle_t_z);
+        if(angle_t_x>0-5 && angle_t_x<0+5 && angle_t_z>0-5 && angle_t_z<0+5 && -moveground>100 && -moveground<105 ){
+            printf("HIT");
+
+        }
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(15,40,180);
+        obstacles();
+        //printf("x:%lf y:%lf\n",angle_t_x,angle_t_z);
+        if(angle_t_x>-40-5 && angle_t_x<-40+5 && angle_t_z>15-10 && angle_t_z<15+10 && -moveground>180 && -moveground<185  ){
+            printf("HIT");
+        }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(-15,25,300);
+        obstacles();
+        if(angle_t_x>-25-5 && angle_t_x<-25+5 && angle_t_z>-15-10 && angle_t_z<-15+10 && -moveground>300 && -moveground<305  ){
+            printf("HIT");
+        }
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(0,-25,450);
+        obstacles();
+        if(angle_t_x>25-5 && angle_t_x<25+5 && angle_t_z>-0-10 && angle_t_z<-0+10 && -moveground>450 && -moveground<455  ){
+            printf("HIT");
+        }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(45,0,600);
+        obstacles();
+         if(angle_t_x>0-5 && angle_t_x<0+5 && angle_t_z>45-10 && angle_t_z<45+10 && -moveground>600 && -moveground<605  ){
+            printf("HIT");
+        }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(15,15,800);
+        obstacles();
+         if(angle_t_x>-15-5 && angle_t_x<-15+5 && angle_t_z>15-10 && angle_t_z<15+10 && -moveground>800 && -moveground<805  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(15,50,900);
+        obstacles();
+         if(angle_t_x>-50-5 && angle_t_x<-50+5 && angle_t_z>-15-10 && angle_t_z<-15+10 && -moveground>900 && -moveground<905  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(50,50,1000);
+        obstacles();
+         if(angle_t_x>50-5 && angle_t_x<50+5 && angle_t_z>-50-10 && angle_t_z<-50+10 && -moveground>1000 && -moveground<1005  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(45,0,1100);
+        obstacles();
+         if(angle_t_x>0-5 && angle_t_x<0+5 && angle_t_z>45-10 && angle_t_z<-45+10 && -moveground>1100 && -moveground<1105  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(0,45,1200);
+        obstacles();
+         if(angle_t_x>-45-5 && angle_t_x<-45+5 && angle_t_z>0-10 && angle_t_z<0+10 && -moveground>1200 && -moveground<1205  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+        glPushMatrix();
+        glTranslatef(0,0,2100);
+        obstacles();
+         if(angle_t_x>-0-5 && angle_t_x<-0+5 && angle_t_z>-0-10 && angle_t_z<-0+10 && -moveground>2100 && -moveground<2105  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(15,40,2180);
+        obstacles();
+         if(angle_t_x>40-5 && angle_t_x<40+5 && angle_t_z>-15-10 && angle_t_z<-15+10 && -moveground>2180 && -moveground<2185 ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(-15,25,2300);
+        obstacles();
+         if(angle_t_x>25-5 && angle_t_x<25+5 && angle_t_z>15-10 && angle_t_z<15+10 && -moveground>2300 && -moveground<2305  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(0,-25,2450);
+        obstacles();
+         if(angle_t_x>25-5 && angle_t_x<25+5 && angle_t_z>-0-10 && angle_t_z<-0+10 && -moveground>2450 && -moveground<2455  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(45,0,2600);
+        obstacles();
+         if(angle_t_x>0-5 && angle_t_x<0+5 && angle_t_z>45-10 && angle_t_z<45+10 && -moveground>2600 && -moveground<2605  ){
+            printf("HIT");}
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(15,15,2800);
+        obstacles();
+         if(angle_t_x>-15-5 && angle_t_x<-15+5 && angle_t_z>15-10 && angle_t_z<15+10 && -moveground>2800 && -moveground<2805  ){
+            printf("HIT");}
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(15,50,2900);
+        obstacles();
+         if(angle_t_x>-50-5 && angle_t_x<-50+5 && angle_t_z>-15-10 && angle_t_z<-15+10 && -moveground>2900 && -moveground<2905  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(50,50,2000);
+        obstacles();
+         if(angle_t_x>50-5 && angle_t_x<50+5 && angle_t_z>-50-10 && angle_t_z<-50+10 && -moveground>2000 && -moveground<2005 ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(45,0,3100);
+        obstacles();
+         if(angle_t_x>0-5 && angle_t_x<0+5 && angle_t_z>45-10 && angle_t_z<45+10 && -moveground>3100 && -moveground<3105  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(0,45,3200);
+        obstacles();
+         if(angle_t_x>-45-5 && angle_t_x<-45+5 && angle_t_z>0-10 && angle_t_z<0+10 && -moveground>3200 && -moveground<3205  ){
+            printf("HIT");
+         }
+    glPopMatrix();
+    //obstacles end
+
     glTranslated(50,0,0);//lower than the plane
     glTranslated(0,-125,0);//set in middle position
 
@@ -828,6 +1048,27 @@ void Ground(){
     glPopMatrix();
 }
 
+void drawsun(){
+    glPushMatrix();
+        glTranslatef(-200,-500,5000);
+        glColor3f(0,0,0);
+        drawCircle(500,24);
+    glPopMatrix();
+}
+void drawEnd()
+{
+    glPushMatrix();
+    glTranslatef(100,100,0);
+    glRotated(90,1,0,0);
+    glRotated(90,0,0,1);
+    glBegin(GL_QUADS);
+        glVertex3f(0,0,0);
+        glVertex3f(0,200,0);
+        glVertex3f(0,200,200);
+        glVertex3f(0,0,200);
+    glEnd();
+    glPopMatrix();
+}
 void display(){
 
 	//clear the display
@@ -862,12 +1103,15 @@ void display(){
 	/ Add your objects from here
 	****************************/
 	//add objects
-
-	drawAxes();
+	//drawEnd();
+    drawsun();
+	//drawAxes();
 	drawGrid();
 
     Ground();
     aeroplane();
+
+
     //glColor3f(1,0,0);
     //drawSquare(10);
 
@@ -882,7 +1126,7 @@ void display(){
     //100*sin(angle_c_x)+(500-100*cos(angle_c_x))*sin(angle_t_x);
 
 
-    //drawCircle(30,24);
+
 
     //drawCone(20,50,24);
 
@@ -897,9 +1141,12 @@ void display(){
 
 
 void animate(){
+
+
+
 	//display();
     if(moveground > -road_lim){
-        moveground-=.5;
+        moveground-=.03;
         //resetpos();
     }
     if(red>0.0){   //////for changing day to night
@@ -948,10 +1195,8 @@ void init(){
 	//aspect ratio that determines the field of view in the X direction (horizontally)
 	//near distance
 	//far distance
-	for (int c = 1; c <= 10; c++) {
-         n=rand() % 100 + 1;
-        printf("%d\n",rand);
-	}
+
+
 }
 
 int main(int argc, char **argv){
@@ -985,146 +1230,3 @@ int main(int argc, char **argv){
 	return 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-void drawSphere(double radius,int slices,int stacks,int up)
-{
-	struct point points[100][100];
-	int i,j;
-	double h,r;
-	//generate points
-	for(i=0;i<=stacks;i++)
-	{
-		h=radius*sin(((double)i/(double)stacks)*(pi/2));
-		if(up==3){
-                r= 2*radius- radius*cos(((double)i/(double)stacks)*(pi/2));
-		}else{
-		     r=  radius*cos(((double)i/(double)stacks)*(pi/2));
-		}
-		for(j=0;j<=slices;j++)
-		{
-		    if(up!=3){
-			points[i][j].x=r*cos(((double)j/(double)slices)*2*pi);
-			points[i][j].y=r*sin(((double)j/(double)slices)*2*pi);
-			points[i][j].z=h;
-		    }
-		    else{
-            points[i][j].x= r*cos(((double)j/(double)slices)*2*pi);
-			points[i][j].y=(r*sin(((double)j/(double)slices)*2*pi));
-			points[i][j].z=h;
-
-		    }
-		}
-	}
-	//draw quads using generated points
-	for(i=0;i<stacks;i++)
-	{
-        //glColor3f((double)i/(double)stacks,(double)i/(double)stacks,(double)i/(double)stacks);
-
-		for(j=0;j<slices;j++)
-		{
-			glBegin(GL_QUADS);{
-			    //upper hemisphere
-			    glColor3f(j%2,j%2,j%2);
-			    if(up==1 or up==-1 or up==3)
-                {
-                    glVertex3f(points[i][j].x,points[i][j].y,points[i][j].z);
-                    glVertex3f(points[i][j+1].x,points[i][j+1].y,points[i][j+1].z);
-                    glVertex3f(points[i+1][j+1].x,points[i+1][j+1].y,points[i+1][j+1].z);
-                    glVertex3f(points[i+1][j].x,points[i+1][j].y,points[i+1][j].z);
-                }
-                //lower hemisphere
-                if(up==0 or up==-1)
-                {
-
-                    glVertex3f(points[i][j].x,points[i][j].y,-points[i][j].z);
-                    glVertex3f(points[i][j+1].x,points[i][j+1].y,-points[i][j+1].z);
-                    glVertex3f(points[i+1][j+1].x,points[i+1][j+1].y,-points[i+1][j+1].z);
-                    glVertex3f(points[i+1][j].x,points[i+1][j].y,-points[i+1][j].z);
-                }
-
-
-			}glEnd();
-		}
-	}
-}
-
-
-void offline()
-{
-
-    glBegin(GL_QUADS);{
-        //upper hemisphere
-        glColor3f(.1,.1,.1);
-        glVertex3f(200,-650,200);
-        glVertex3f(200,-650,-200);
-        glVertex3f(-200,-650,-200);
-        glVertex3f(-200,-650,200);
-
-    }glEnd();
-
-
-    if(bullet==1 && abs(X)<200 && abs(Z)<200){
-    Y++;
-    arra[Y].x=X;
-    arra[Y].z = Z;
-    printf("%lf %lf %lf %lf\n",X,Z,angle_c_x,angle_c_z);
-
-	bullet =0;
-
-    }
-    int j;
-    for(j=0;j<=Y;j++){
-        glColor3f(1.0,0.0,0.0);
-
-            glBegin(GL_QUADS);{
-            glVertex3f(arra[j].x+5 ,-649, arra[j].z+5);
-            glVertex3f(arra[j].x+5,-649, arra[j].z-5);
-            glVertex3f(arra[j].x-5,-649,arra[j].z-5 );
-            glVertex3f(arra[j].x-5, -649, arra[j].z+5);
-        }glEnd();
-    }
-
-    int segment =30;
-    glRotatef(angle_c_z,0,0,1);
-    glRotatef(angle_c_x,1,0,0);
-    glRotatef(90,1,0,0);
-    glTranslatef(0,0,20);
-    drawSphere(20,segment,segment,0);
-    draw_cylinder(20,100,segment);
-    glTranslatef(0,0,100);
-    drawSphere(20,segment,segment,1);
-    double r,l;
-    r=15;
-    l=170;
-    glTranslatef(0,0,20);
-
-    glRotatef(angle_t_x,1,0,0);
-    glRotatef(angle_t_z,0,0,1);
-
-    glTranslatef(0,0,r);
-    drawSphere(r,segment,segment,0);
-    draw_cylinder(r,l,segment);
-    glTranslatef(0,0,l);
-    drawSphere(r,segment,segment,3);
-}
-*/
